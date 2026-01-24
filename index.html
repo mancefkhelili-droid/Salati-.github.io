@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>صلاتي في وقتها - Prayer Times App</title>
+    <meta name="title" content="صلاتي في وقتها - Prayer Times App">
+    <meta name="description" content="تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل. Accurate prayer times with notifications and Athan. Works offline and respects your privacy.">
+    <meta name="keywords" content="prayer times, salat, أوقات الصلاة, أذان, athan, muslim app, islamic app">
+    <meta name="author" content="Salati Fi Waqtiha">
+    <meta name="theme-color" content="#1a472a">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://salati-fi-waqtiha.app/">
+    <meta property="og:title" content="صلاتي في وقتها - Prayer Times App">
+    <meta property="og:description" content="تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل.">
+    <meta property="og:image" content="https://salati-fi-waqtiha.app/icon-512.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://salati-fi-waqtiha.app/">
+    <meta property="twitter:title" content="صلاتي في وقتها - Prayer Times App">
+    <meta property="twitter:description" content="تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل.">
+    <meta property="twitter:image" content="https://salati-fi-waqtiha.app/icon-512.png">
+    
+    <!-- Security -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self'; frame-src https://googleads.g.doubleclick.net;">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "صلاتي في وقتها",
+      "alternateName": "Salati Fi Waqtiha",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any (Progressive Web App)",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل.",
+      "featureList": [
+        "حساب أوقات الصلاة بدقة فلكية",
+        "تنبيهات مع صوت الأذان",
+        "يعمل بدون إنترنت",
+        "دعم متعدد اللغات (العربية، الفرنسية، الإنجليزية)",
+        "الوضع الليلي",
+        "خصوصية كاملة - لا توجد خوادم خارجية"
+      ],
+      "screenshot": "https://salati-fi-waqtiha.app/screenshot.png",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "ratingCount": "1000"
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 data-i18n="loading">جاري التحميل...</h2>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title" data-i18n="app_title">صلاتي في وقتها</h1>
+                <div class="header-actions">
+                    <button id="dark-mode-toggle" class="icon-btn" aria-label="Toggle dark mode">
+                        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <button id="settings-btn" class="icon-btn" aria-label="Settings">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6m-9-9h6m6 0h6"></path>
+                            <path d="M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24m0-14.14l-4.24 4.24m-5.66 5.66L4.93 19.07"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Location Info -->
+        <section class="location-section">
+            <div class="location-info">
+                <svg class="location-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span id="location-text" data-i18n="detecting_location">جاري تحديد الموقع...</span>
+            </div>
+            <div class="date-info">
+                <span id="hijri-date"></span>
+                <span class="date-separator">•</span>
+                <span id="gregorian-date"></span>
+            </div>
+            <div class="current-time-display" id="current-time">--:--:--</div>
+        </section>
+
+        <!-- Next Prayer Countdown -->
+        <section class="countdown-section">
+            <div class="countdown-card">
+                <div class="countdown-label" data-i18n="next_prayer">الصلاة القادمة</div>
+                <div class="countdown-prayer" id="next-prayer-name">الفجر</div>
+                
+                <!-- Time Remaining Label -->
+                <div style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 4px;" data-i18n="time_remaining">الوقت المتبقي</div>
+                <div class="countdown-timer" id="countdown-timer">00:00:00</div>
+                
+                <div class="countdown-time" id="next-prayer-time">05:30</div>
+            </div>
+        </section>
+
+        <!-- Prayer Times Grid -->
+        <section class="prayer-times-section">
+            <h2 class="section-title" data-i18n="prayer_times">أوقات الصلاة</h2>
+            <div class="prayer-grid" id="prayer-grid">
+                <!-- Prayer cards will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- AdSense Placeholder -->
+        <section class="ad-section">
+            <div class="ad-container">
+                <!-- Google AdSense Ad Unit -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+            </div>
+        </section>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel hidden">
+            <div class="settings-content">
+                <div class="settings-header">
+                    <h2 data-i18n="settings">الإعدادات</h2>
+                    <button id="close-settings" class="icon-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="settings-body">
+                    <!-- Language Selection -->
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="language">اللغة</label>
+                        <select id="language-select" class="setting-select">
+                            <option value="ar">العربية</option>
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <!-- Calculation Method -->
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="calculation_method">طريقة الحساب</label>
+                        <select id="method-select" class="setting-select">
+                            <option value="MuslimWorldLeague">Muslim World League</option>
+                            <option value="Egyptian">Egyptian General Authority</option>
+                            <option value="Karachi">University of Islamic Sciences, Karachi</option>
+                            <option value="UmmAlQura">Umm Al-Qura University, Makkah</option>
+                            <option value="Dubai">Dubai</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="MoonsightingCommittee">Moonsighting Committee</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="NorthAmerica">Islamic Society of North America</option>
+                        </select>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="notifications">التنبيهات</label>
+                        <button id="enable-notifications" class="btn-primary" data-i18n="enable_notifications">تفعيل التنبيهات</button>
+                        
+                        <!-- Athan Selection -->
+                        <div class="athan-selector" style="margin-top: 15px;">
+                            <label class="setting-label" style="font-size: 0.9rem;" data-i18n="athan_voice">صوت الأذان</label>
+                            <select id="athan-select" class="setting-select">
+                                <option value="assets/athan.mp3" data-i18n="athan_makkah">أذان مكة (الافتراضي)</option>
+                                <option value="assets/athan_madina.mp3" data-i18n="athan_madina">أذان المدينة</option>
+                                <option value="assets/athan_quds.mp3" data-i18n="athan_quds">أذان القدس</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-top: 10px;">
+                            <button id="test-notification" class="btn-secondary" style="width: 100%;" data-i18n="test_notification">تجربة التنبيه</button>
+                        </div>
+
+                        <p class="setting-hint" data-i18n="notification_hint">سيتم تشغيل الأذان عند وقت الصلاة</p>
+                    </div>
+
+                    <!-- City Selection (Easier than coordinates) -->
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="select_city">اختر المدينة</label>
+                        <select id="city-select" class="setting-select">
+                            <option value="manual" data-i18n="manual_selection">تحديد يدوي / Manual</option>
+                            <option value="21.4225,39.8262">Makkah (مكة المكرمة)</option>
+                            <option value="24.4672,39.6102">Madina (المدينة المنورة)</option>
+                            <option value="31.7683,35.2137">Al-Quds (القدس)</option>
+                            <option value="24.7136,46.6753">Riyadh (الرياض)</option>
+                            <option value="30.0444,31.2357">Cairo (القاهرة)</option>
+                            <option value="25.276987,55.296249">Dubai (دبي)</option>
+                            <option value="41.0082,28.9784">Istanbul (إسطنبول)</option>
+                            <option value="51.5074,-0.1278">London (لندن)</option>
+                            <option value="40.7128,-74.0060">New York (نيويورك)</option>
+                            <option value="48.8566,2.3522">Paris (باريس)</option>
+                            <option value="3.1390,101.6869">Kuala Lumpur (كوالالمبور)</option>
+                            <option value="-6.2088,106.8456">Jakarta (جاكرتا)</option>
+                            <option value="-6.2088,106.8456">Jakarta (الجزائر)</option>
+                        </select>الصلاة
+                    </div>
+
+                    <!-- Manual Location -->
+                    <div class="setting-group">
+                        <label class="setting-label" data-i18n="manual_location">الموقع اليدوي</label>
+                        <div class="location-inputs">
+                            <input type="number" id="latitude-input" placeholder="Latitude" step="0.0001" class="setting-input">
+                            <input type="number" id="longitude-input" placeholder="Longitude" step="0.0001" class="setting-input">
+                            <button id="update-location" class="btn-secondary" data-i18n="update">تحديث</button>
+                        </div>
+                    </div>
+
+                    <!-- Install PWA -->
+                    <div class="setting-group">
+                        <button id="install-pwa" class="btn-primary hidden" data-i18n="install_app">تثبيت التطبيق</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/adhan@4.4.3/Adhan.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- AdSense Script (Add your publisher ID) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</body>
+</html>

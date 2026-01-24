@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /assets/athan.mp3
+
+Sitemap: https://salati-fi-waqtiha.app/sitemap.xml

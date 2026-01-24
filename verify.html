@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Cache - Salati Fi Waqtiha</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: #fff; padding: 20px; }
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+        .log { background: #333; padding: 10px; border-radius: 5px; margin-top: 20px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>System Status Check</h1>
+    <div id="status">Checking...</div>
+    <div id="log" class="log"></div>
+
+    <script>
+        const CACHE_NAME = 'salati-v1'; // Must match sw.js
+        const logEl = document.getElementById('log');
+        const statusEl = document.getElementById('status');
+        
+        function log(msg, type = 'info') {
+            const line = document.createElement('div');
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            if(type === 'error') line.style.color = '#f87171';
+            if(type === 'success') line.style.color = '#4ade80';
+            logEl.appendChild(line);
+        }
+
+        async function verify() {
+            try {
+                // 1. Check Service Worker
+                if (!('serviceWorker' in navigator)) {
+                    throw new Error("Service Worker not supported");
+                }
+                const reg = await navigator.serviceWorker.getRegistration();
+                if (!reg) {
+                    log("Service Worker NOT registered yet. Run the app first.", 'error');
+                } else {
+                    log("Service Worker active.", 'success');
+                }
+
+                // 2. Check Cache Storage
+                const hasCache = await caches.has(CACHE_NAME);
+                if (!hasCache) {
+                    log(`Cache '${CACHE_NAME}' not found.`, 'error');
+                } else {
+                    log(`Cache '${CACHE_NAME}' found.`, 'success');
+                    
+                    const cache = await caches.open(CACHE_NAME);
+                    // 3. Verify Audio File
+                    const audioResponse = await cache.match('./assets/athan.mp3');
+                    if (audioResponse) {
+                        log("Athan Audio File (athan.mp3): VERIFIED (Cached)", 'success');
+                    } else {
+                        log("Athan Audio File (athan.mp3): MISSING from Cache", 'error');
+                    }
+                    
+                    // 4. Verify Adhan.js
+                    const libResponse = await cache.match('https://cdn.jsdelivr.net/npm/adhan@4.4.3/Adhan.js');
+                    if (libResponse) {
+                        log("Adhan.js Library: VERIFIED (Cached)", 'success');
+                    } else {
+                        log("Adhan.js Library: MISSING (Could be network fail or not cached yet)", 'error');
+                    }
+                }
+                
+                statusEl.innerHTML = "<h2 class='success'>Diagnostics Complete</h2>";
+
+            } catch (err) {
+                console.error(err);
+                log("Fatal Error: " + err.message, 'error');
+                statusEl.innerHTML = "<h2 class='error'>Diagnostics Failed</h2>";
+            }
+        }
+        
+        verify();
+    </script>
+</body>
+</html>
