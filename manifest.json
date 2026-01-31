@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#1a472a",
   "theme_color": "#1a472a",
-  "description": "Accurate Prayer Times Offline App",
+  "description": "Accurate Prayer Times with Advanced Alarm System - أوقات الصلاة الدقيقة مع نظام تنبيهات متقدم",
   "orientation": "portrait",
   "categories": ["lifestyle", "utilities"],
   "icons": [
@@ -26,6 +26,22 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Qibla Finder",
+      "short_name": "Qibla",
+      "description": "Find Qibla Direction",
+      "url": "./?feature=qibla",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tasbeeh",
+      "short_name": "Tasbeeh",
+      "description": "Digital Prayer Counter",
+      "url": "./?feature=tasbeeh",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

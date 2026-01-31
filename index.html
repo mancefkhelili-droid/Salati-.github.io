@@ -15,19 +15,20 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://salati-fi-waqtiha.app/">
-    <meta property="og:title" content="صلاتي في وقتها - Prayer Times App">
+    <meta property="og:title" content="صلاتي في وقتها - Prayer Times ">
     <meta property="og:description" content="تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل.">
     <meta property="og:image" content="https://salati-fi-waqtiha.app/icon-512.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://salati-fi-waqtiha.app/">
-    <meta property="twitter:title" content="صلاتي في وقتها - Prayer Times App">
+    <meta property="twitter:title" content="صلاتي في وقتها - Prayer Times ">
     <meta property="twitter:description" content="تطبيق أوقات الصلاة الدقيق مع التنبيهات والأذان. يعمل بدون إنترنت ويحترم خصوصيتك بالكامل.">
     <meta property="twitter:image" content="https://salati-fi-waqtiha.app/icon-512.png">
     
     <!-- Security -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self'; frame-src https://googleads.g.doubleclick.net;">
+    <!-- CSP removed temporarily to allow Adhan.js CDN loading -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self'; connect-src 'self'; frame-src https://googleads.g.doubleclick.net;"> -->
     
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -60,10 +61,14 @@
       "featureList": [
         "حساب أوقات الصلاة بدقة فلكية",
         "تنبيهات مع صوت الأذان",
+        "نظام تنبيهات متقدم مع ملفات .ics للتقويم",
+        "تنبيهات يومية متكررة لجميع الصلوات",
+        "تنبيهات مخصصة لصلوات معينة",
         "يعمل بدون إنترنت",
         "دعم متعدد اللغات (العربية، الفرنسية، الإنجليزية)",
         "الوضع الليلي",
-        "خصوصية كاملة - لا توجد خوادم خارجية"
+        "خصوصية كاملة - لا توجد خوادم خارجية",
+        "تحديد الموقع الدقيق مع خيار الاختيار اليدوي"
       ],
       "screenshot": "https://salati-fi-waqtiha.app/screenshot.png",
       "aggregateRating": {
@@ -106,6 +111,13 @@
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </button>
+                    <button id="header-install-btn" class="icon-btn hidden" aria-label="Install App" style="color: var(--accent-secondary);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
                     <button id="settings-btn" class="icon-btn" aria-label="Settings">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"></circle>
@@ -145,15 +157,143 @@
                 <div class="countdown-timer" id="countdown-timer">00:00:00</div>
                 
                 <div class="countdown-time" id="next-prayer-time">05:30</div>
+                
+                <!-- Stop Athan Button -->
+                <button id="stop-athan" class="btn-stop-athan" style="display: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="6" y="6" width="12" height="12"></rect>
+                    </svg>
+                    إيقاف الأذان / Stop Athan
+                </button>
             </div>
         </section>
 
-        <!-- Prayer Times Grid -->
+        <!-- Prayer Times List (New Vertical Layout) -->
         <section class="prayer-times-section">
-            <h2 class="section-title" data-i18n="prayer_times">أوقات الصلاة</h2>
-            <div class="prayer-grid" id="prayer-grid">
-                <!-- Prayer cards will be inserted here by JavaScript -->
+            <div class="prayer-list" id="prayer-grid">
+                <!-- Prayer rows will be inserted here by JavaScript -->
             </div>
+        </section>
+
+        <!-- Qibla Finder Section -->
+        <section class="qibla-section hidden" id="qibla-section">
+            <h2 class="section-title" data-i18n="qibla_finder">اتجاه القبلة / Qibla Finder</h2>
+            <div class="qibla-container">
+                <div class="compass">
+                    <div class="compass-arrow" id="qibla-arrow"></div>
+                    <div class="kaaba-icon">🕋</div>
+                </div>
+                <p class="qibla-status" id="qibla-status" data-i18n="move_phone">حرك هاتفك لمعايرة البوصلة / Calibration...</p>
+            </div>
+        </section>
+
+        <!-- Digital Tasbeeh Section -->
+        <section class="tasbeeh-section">
+            <h2 class="section-title" data-i18n="electronic_tasbeeh">السبحة الإلكترونية / Tasbeeh</h2>
+            <div class="tasbeeh-container">
+                <div class="tasbeeh-display" id="tasbeeh-count">0</div>
+                <button class="tasbeeh-btn" id="tasbeeh-click-btn">
+                    <span>سبّح / Tap</span>
+                </button>
+                <button class="tasbeeh-reset" id="tasbeeh-reset-btn" data-i18n="reset">tصفير / Reset</button>
+            </div>
+        </section>
+
+        <!-- Alarm System Section -->
+        <section class="alarm-section">
+            <h2 class="section-title">⏰ نظام التنبيهات / Alarm System</h2>
+            
+            <!-- Alarm Mode Buttons -->
+            <div class="alarm-modes">
+                <button id="enable-lifetime-alarms" class="btn-alarm lifetime">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>تفعيل لكل الصلوات دائماً<br><small>Enable All Prayers Forever</small></span>
+                </button>
+                
+                <button id="enable-today-alarms" class="btn-alarm today">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span>صلوات اليوم فقط<br><small>Today Only</small></span>
+                </button>
+            </div>
+
+            <!-- Individual Prayer Alarms -->
+            <div class="alarm-toggles">
+                <div class="alarm-header">
+                    <h3>تحديد صلوات معينة / Select Specific Prayers</h3>
+                    <button id="select-all-alarms" class="btn-secondary small">
+                        تحديد الكل / Select All
+                    </button>
+                </div>
+                
+                <div class="alarm-list">
+                    <div class="alarm-item">
+                        <label class="alarm-label">
+                            <input type="checkbox" id="alarm-toggle-fajr" class="alarm-checkbox">
+                            <span class="alarm-name">الفجر / Fajr</span>
+                            <span class="alarm-status"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="alarm-item">
+                        <label class="alarm-label">
+                            <input type="checkbox" id="alarm-toggle-dhuhr" class="alarm-checkbox">
+                            <span class="alarm-name">الظهر / Dhuhr</span>
+                            <span class="alarm-status"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="alarm-item">
+                        <label class="alarm-label">
+                            <input type="checkbox" id="alarm-toggle-asr" class="alarm-checkbox">
+                            <span class="alarm-name">العصر / Asr</span>
+                            <span class="alarm-status"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="alarm-item">
+                        <label class="alarm-label">
+                            <input type="checkbox" id="alarm-toggle-maghrib" class="alarm-checkbox">
+                            <span class="alarm-name">المغرب / Maghrib</span>
+                            <span class="alarm-status"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="alarm-item">
+                        <label class="alarm-label">
+                            <input type="checkbox" id="alarm-toggle-isha" class="alarm-checkbox">
+                            <span class="alarm-name">العشاء / Isha</span>
+                            <span class="alarm-status"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="alarm-note">
+                    <p>📥 <strong>ملاحظة:</strong> عند تفعيل التنبيه، سيتم تنزيل ملف .ics يمكنك إضافته إلى تقويم هاتفك.</p>
+                    <p>📥 <strong>Note:</strong> When you enable an alarm, an .ics file will be downloaded that you can add to your phone's calendar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Application -->
+        <section class="share-section">
+            <button id="share-app-btn" class="btn-primary share-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                <span data-i18n="share_with_loved">شارك التطبيق مع أحبابك</span>
+            </button>
         </section>
 
         <!-- AdSense Placeholder -->
@@ -219,9 +359,9 @@
                         <div class="athan-selector" style="margin-top: 15px;">
                             <label class="setting-label" style="font-size: 0.9rem;" data-i18n="athan_voice">صوت الأذان</label>
                             <select id="athan-select" class="setting-select">
-                                <option value="assets/athan.mp3" data-i18n="athan_makkah">أذان مكة (الافتراضي)</option>
-                                <option value="assets/athan_madina.mp3" data-i18n="athan_madina">أذان المدينة</option>
-                                <option value="assets/athan_quds.mp3" data-i18n="athan_quds">أذان القدس</option>
+                                <option value="./athan.mp3" data-i18n="athan_makkah">أذان مكة (الافتراضي)</option>
+                                <option value="./athan_madina.mp3" data-i18n="athan_madina">أذان المدينة</option>
+                                <option value="./athan_quds.mp3" data-i18n="athan_quds">أذان القدس</option>
                             </select>
                         </div>
                         
@@ -232,11 +372,11 @@
                         <p class="setting-hint" data-i18n="notification_hint">سيتم تشغيل الأذان عند وقت الصلاة</p>
                     </div>
 
-                    <!-- City Selection (Easier than coordinates) -->
+                    <!-- City Selection -->
                     <div class="setting-group">
                         <label class="setting-label" data-i18n="select_city">اختر المدينة</label>
                         <select id="city-select" class="setting-select">
-                            <option value="manual" data-i18n="manual_selection">تحديد يدوي / Manual</option>
+                            <option value="manual" disabled>-- Select City / اختر المدينة --</option>
                             <option value="21.4225,39.8262">Makkah (مكة المكرمة)</option>
                             <option value="24.4672,39.6102">Madina (المدينة المنورة)</option>
                             <option value="31.7683,35.2137">Al-Quds (القدس)</option>
@@ -249,18 +389,19 @@
                             <option value="48.8566,2.3522">Paris (باريس)</option>
                             <option value="3.1390,101.6869">Kuala Lumpur (كوالالمبور)</option>
                             <option value="-6.2088,106.8456">Jakarta (جاكرتا)</option>
-                            <option value="-6.2088,106.8456">Jakarta (الجزائر)</option>
-                        </select>الصلاة
-                    </div>
-
-                    <!-- Manual Location -->
-                    <div class="setting-group">
-                        <label class="setting-label" data-i18n="manual_location">الموقع اليدوي</label>
-                        <div class="location-inputs">
-                            <input type="number" id="latitude-input" placeholder="Latitude" step="0.0001" class="setting-input">
-                            <input type="number" id="longitude-input" placeholder="Longitude" step="0.0001" class="setting-input">
-                            <button id="update-location" class="btn-secondary" data-i18n="update">تحديث</button>
-                        </div>
+                            <!-- Start of Maghreb Cities -->
+                            <option value="36.7525,3.0420">Algiers (الجزائر)</option>
+                            <option value="35.6969,-0.6331">Oran (وهران)</option>
+                            <option value="36.3650,6.6147">Constantine (قسنطينة)</option>
+                            <option value="36.9006,7.7669">Annaba (عنابة)</option>
+                            <option value="36.7372,5.0657">Bejaia (بجاية)</option>
+                            <option value="35.6971,4.5428">Msila (المسيلة)</option>
+                            <option value="36.8065,10.1815">Tunis (تونس)</option>
+                            <option value="33.5731,-7.5898">Casablanca (الدار البيضاء)</option>
+                            <option value="34.0209,-6.8416">Rabat (الرباط)</option>
+                            <option value="32.8951,13.1802">Tripoli (طرابلس)</option>
+                            <option value="18.0735,-15.9582">Nouakchott (نواكشوط)</option>
+                        </select>
                     </div>
 
                     <!-- Install PWA -->
@@ -273,7 +414,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/adhan@4.4.3/Adhan.js"></script>
     <script src="app.js"></script>
     
     <!-- AdSense Script (Add your publisher ID) -->

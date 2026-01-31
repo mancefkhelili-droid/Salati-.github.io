@@ -51,7 +51,7 @@
                     
                     const cache = await caches.open(CACHE_NAME);
                     // 3. Verify Audio File
-                    const audioResponse = await cache.match('./assets/athan.mp3');
+                    const audioResponse = await cache.match('./athan.mp3');
                     if (audioResponse) {
                         log("Athan Audio File (athan.mp3): VERIFIED (Cached)", 'success');
                     } else {
